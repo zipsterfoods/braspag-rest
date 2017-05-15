@@ -25,6 +25,12 @@ describe BraspagRest::Payment do
       'ServiceTaxAmount' => 0,
       'Country' => 'BRA',
       'AcquirerTransactionId' => '0625101832104',
+      'Status' => 1,
+      'RecurrentPayment' => {
+        'AuthorizeNow' => true,
+        'EndDate' => '2019-12-01',
+        'Interval' => 'SemiAnnual',
+      },
       'CreditCard' => {
         'ExpirationDate' => '12/2021',
         'SaveCard' => false,
@@ -100,6 +106,7 @@ describe BraspagRest::Payment do
       expect(payment.authorization_code).to eq('058475')
       expect(payment.reason_code).to eq(0)
       expect(payment.reason_message).to eq('Successful')
+      expect(payment.recurrent_payment).to be_an_instance_of(BraspagRest::RecurrentPayment)
     end
   end
 

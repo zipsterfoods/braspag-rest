@@ -79,6 +79,11 @@ describe BraspagRest::Sale do
           amount: 15700,
           provider: 'Simulado',
           installments: 1,
+          recurrent_payment: {
+            end_date: '2019-12-11',
+            interval: 'SemiAnnual',
+            authorize_now: true
+          },
           credit_card: {
             number: '0000000000000001',
             holder: 'Maria',
