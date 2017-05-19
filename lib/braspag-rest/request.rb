@@ -4,6 +4,7 @@ module BraspagRest
       SALE_ENDPOINT = '/v2/sales/'
       VOID_ENDPOINT = '/void'
       CAPTURE_ENDPOINT = '/capture'
+      RECURRENT_PAYMENT_ENDPOINT = '/v2/RecurrentPayment/'
 
       def authorize(request_id, params)
         config.logger.info("[BraspagRest][Authorize] endpoint: #{sale_url}, params: #{params.to_json}") if config.log_enabled?
@@ -52,6 +53,19 @@ module BraspagRest
           RestClient::Request.execute(
             method: :get,
             url: search_sales_for_merchant_order_id_url(merchant_order_id),
+            headers: default_headers.merge('RequestId' => request_id),
+            timeout: config.request_timeout
+          )
+        end
+      end
+
+      def get_recurrent_payment(request_id, recurrent_payment_id)
+        config.logger.info("[BraspagRest][GetSale] endpoint: #{search_recurrent_payment_url(recurrent_payment_id)}") if config.log_enabled?
+
+        execute_braspag_request do
+          RestClient::Request.execute(
+            method: :get,
+            url: search_recurrent_payment_url(recurrent_payment_id),
             headers: default_headers.merge('RequestId' => request_id),
             timeout: config.request_timeout
           )
@@ -117,6 +131,10 @@ module BraspagRest
         url.path = SALE_ENDPOINT
         url.query = "merchantOrderId=#{merchant_order_id}"
         url.to_s
+      end
+
+      def search_recurrent_payment_url(recurrent_payment_id)
+        config.query_url + RECURRENT_PAYMENT_ENDPOINT + recurrent_payment_id.to_s
       end
 
       def default_headers

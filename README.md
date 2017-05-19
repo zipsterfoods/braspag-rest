@@ -212,7 +212,7 @@ sale.save
 And to create a protected credit card, you should set the credit card saved as true:
 
 ```rb
-credit_card = BraspagRest::CreditCard.new
+credit_card = BraspagRest::Payments::CreditCard.new
 credit_card.number = '0000000000000001'
 credit_card.holder = 'Teste Holder'
 credit_card.expiration_date = '12/2021'
@@ -235,6 +235,14 @@ sale.customer.name
 sales = BraspagRest::Sale.find_by_order_id('REQUEST_ID', 'MERCHANT_ORDER_ID')
 sales.map { |sale| sale.customer.name }
 => ["Maria", "Joana"]
+```
+
+### Find a recurrent payment
+
+```rb
+recurrent_payment = BraspagRest::RecurrentPayment.find('REQUEST_ID', 'RECURRENT_PAYMENT_ID')
+recurrent_payment.customer.name
+=> "Maria"
 ```
 
 ### Cancel a sale

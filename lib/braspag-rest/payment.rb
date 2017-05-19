@@ -13,8 +13,8 @@ module BraspagRest
     property :status, from: 'Status'
     property :provider, from: 'Provider'
     property :installments, from: 'Installments'
-    property :recurrent_payment, from: 'RecurrentPayment', with: ->(values) { BraspagRest::RecurrentPayment.new(values) }
-    property :credit_card, from: 'CreditCard', with: ->(values) { BraspagRest::CreditCard.new(values) }
+    property :recurrent_payment, from: 'RecurrentPayment', with: ->(values) { BraspagRest::Payments::RecurrentPayment.new(values) }
+    property :credit_card, from: 'CreditCard', with: ->(values) { BraspagRest::Payments::CreditCard.new(values) }
     property :transaction_id, from: 'AcquirerTransactionId'
     property :authorization_code, from: 'AuthorizationCode'
     property :proof_of_sale, from: 'ProofOfSale'
@@ -44,8 +44,8 @@ module BraspagRest
     property :links, from: 'Links'
 
     coerce_key :fraud_analysis, BraspagRest::FraudAnalysis
-    coerce_key :recurrent_payment, BraspagRest::RecurrentPayment
-    coerce_key :credit_card, BraspagRest::CreditCard
+    coerce_key :recurrent_payment, BraspagRest::Payments::RecurrentPayment
+    coerce_key :credit_card, BraspagRest::Payments::CreditCard
 
     def authorized?
       status.to_i.eql?(STATUS_AUTHORIZED)
