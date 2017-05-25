@@ -17,12 +17,6 @@ module BraspagRest
       property :recurrency_day, from: 'RecurrencyDay'
       property :successful_recurrences, from: 'SuccessfulRecurrences'
       property :status, from: 'Status'
-
-      def self.find(request_id, recurrent_payment_id)
-        response = BraspagRest::Request.get_recurrent_payment(request_id, recurrent_payment_id)
-
-        new(response.parsed_body.merge('RequestId' => request_id))
-      end
     end
   end
 end

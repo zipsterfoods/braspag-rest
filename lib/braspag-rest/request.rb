@@ -60,12 +60,38 @@ module BraspagRest
       end
 
       def get_recurrent_payment(request_id, recurrent_payment_id)
-        config.logger.info("[BraspagRest][GetSale] endpoint: #{search_recurrent_payment_url(recurrent_payment_id)}") if config.log_enabled?
+        config.logger.info("[BraspagRest][GetRecurrentPayment] endpoint: #{search_recurrent_payment_url(recurrent_payment_id)}") if config.log_enabled?
 
         execute_braspag_request do
           RestClient::Request.execute(
             method: :get,
             url: search_recurrent_payment_url(recurrent_payment_id),
+            headers: default_headers.merge('RequestId' => request_id),
+            timeout: config.request_timeout
+          )
+        end
+      end
+
+      def deactivate_recurrent_payment(request_id, recurrent_payment_id)
+        config.logger.info("[BraspagRest][DeactivatelRecurrentPayment] endpoint: #{deactivate_recurrent_payment_url(recurrent_payment_id)}") if config.log_enabled?
+
+        execute_braspag_request do
+          RestClient::Request.execute(
+            method: :put,
+            url: deactivate_recurrent_payment_url(recurrent_payment_id),
+            headers: default_headers.merge('RequestId' => request_id),
+            timeout: config.request_timeout
+          )
+        end
+      end
+
+      def reactivate_recurrent_payment(request_id, recurrent_payment_id)
+        config.logger.info("[BraspagRest][ReactivatelRecurrentPayment] endpoint: #{reactivate_recurrent_payment_url(recurrent_payment_id)}") if config.log_enabled?
+
+        execute_braspag_request do
+          RestClient::Request.execute(
+            method: :put,
+            url: reactivate_recurrent_payment_url(recurrent_payment_id),
             headers: default_headers.merge('RequestId' => request_id),
             timeout: config.request_timeout
           )
@@ -135,6 +161,14 @@ module BraspagRest
 
       def search_recurrent_payment_url(recurrent_payment_id)
         config.query_url + RECURRENT_PAYMENT_ENDPOINT + recurrent_payment_id.to_s
+      end
+
+      def deactivate_recurrent_payment_url(recurrent_payment_id)
+        config.url + RECURRENT_PAYMENT_ENDPOINT + recurrent_payment_id.to_s + '/Deactivate'
+      end
+
+      def reactivate_recurrent_payment_url(recurrent_payment_id)
+        config.url + RECURRENT_PAYMENT_ENDPOINT + recurrent_payment_id.to_s + '/Reactivate'
       end
 
       def default_headers

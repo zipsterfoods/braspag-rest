@@ -14,5 +14,15 @@ module BraspagRest
 
       new(response.parsed_body.merge('RequestId' => request_id))
     end
+
+    def self.deactivate(request_id, recurrent_payment_id)
+      response = BraspagRest::Request.deactivate_recurrent_payment(request_id, recurrent_payment_id)
+      response.success? ? true : false
+    end
+
+    def self.reactivate(request_id, recurrent_payment_id)
+      response = BraspagRest::Request.reactivate_recurrent_payment(request_id, recurrent_payment_id)
+      response.success? ? true : false
+    end
   end
 end
